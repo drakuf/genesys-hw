@@ -39,6 +39,8 @@ export default function Home() {
       setHasPrevPage(data.info.prev != null);
     } catch (error) {
       console.error("Failed to fetch characters:", error);
+      setHasNextPage(false);
+      setHasPrevPage(false);
     }
   };
 

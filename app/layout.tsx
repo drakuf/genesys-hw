@@ -28,6 +28,7 @@ export default function RootLayout({
           fill
           sizes="100vw"
           className="-z-20 object-cover object-center"
+          unoptimized
         />
         <div className="absolute left-0 top-0 -z-10 h-full w-full bg-black bg-opacity-70"></div>
       </body>

@@ -36,7 +36,7 @@ const Spinner = () => {
       className="fixed bottom-0 left-0 right-0 top-0 z-50 flex h-svh w-full items-center justify-center overflow-x-hidden overflow-y-hidden bg-[#97ce4c]"
     >
       <motion.div initial="initial" animate="animate" variants={pingVariants}>
-        <Image src={SpinnerImg} alt="Rick and Morty spinner" />
+        <Image src={SpinnerImg} alt="Rick and Morty spinner" unoptimized />
       </motion.div>
     </div>
   );

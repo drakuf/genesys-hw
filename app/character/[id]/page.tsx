@@ -67,6 +67,7 @@ const CharacterPage: React.FC<CharacterPageProps> = ({
               src={character?.image ?? ""}
               alt={character?.name ?? ""}
               fill
+              unoptimized
             />
           </div>
         </CardHeader>

@@ -51,6 +51,8 @@ export function DataTable<TData, TValue>({
     pageCount: data?.info?.pages ?? 0,
   });
 
+  console.log("hasnextpage", hasNextPage);
+
   const handleNextPage = () => {
     if (hasNextPage) {
       setPage(page + 1);
@@ -64,7 +66,7 @@ export function DataTable<TData, TValue>({
   };
 
   return (
-    <div className="border border-[#97ce4c] overflow-auto w-full bg-[#44281d] rounded-lg flex flex-col">
+    <div className="flex w-full flex-col overflow-auto rounded-lg border border-[#97ce4c] bg-[#44281d]">
       <ScrollArea className="flex-1 overflow-auto">
         <Table className="text-[#FAFAF5]">
           <TableHeader>
@@ -73,14 +75,14 @@ export function DataTable<TData, TValue>({
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    className="text-[#97ce4c] font-bold"
+                    className="font-bold text-[#97ce4c]"
                     style={{ width: header.getSize() }}
                   >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
                 ))}
@@ -114,12 +116,13 @@ export function DataTable<TData, TValue>({
                             src={cell.getValue() as string}
                             alt={(row.original as { name: string }).name}
                             fill
+                            unoptimized
                           />
                         </div>
                       ) : (
                         flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )
                       )}
                     </TableCell>
@@ -139,8 +142,8 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </ScrollArea>
-      <div className="sticky bottom-0 bg-[#44281d] py-4 flex flex-col space-y-3">
-        <div className="flex w-full items-center justify-center text-sm text-[#FAFAF5] font-medium">
+      <div className="sticky bottom-0 flex flex-col space-y-3 bg-[#44281d] py-4">
+        <div className="flex w-full items-center justify-center text-sm font-medium text-[#FAFAF5]">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
         </div>
