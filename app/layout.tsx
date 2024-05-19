@@ -2,6 +2,7 @@ import Background from "@/public/images/rick-and-morty-bg.jpg";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Image from "next/image";
+import { Suspense } from "react";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
+        <Suspense>{children}</Suspense>
         <Image
           src={Background}
           alt="Rick and Morty background"
