@@ -48,7 +48,15 @@ export default function Home() {
 
   useEffect(() => {
     if (page !== queryPage || searchValue !== queryName) {
-      router.push(`/?page=${page}&name=${searchValue}`);
+      const params = new URLSearchParams({
+        page: page.toString(),
+      });
+
+      if (searchValue) {
+        params.set("name", searchValue);
+      }
+
+      router.push(`/?${params.toString()}`);
     }
   }, [page, searchValue, queryPage, queryName, router]);
 
