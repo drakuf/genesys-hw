@@ -65,11 +65,21 @@ export function DataTable<TData, TValue>({
     }
   };
 
+  const calculateWidth = (size: number) => {
+    if (typeof window !== "undefined") {
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 768) {
+        return size;
+      }
+    }
+    return "100%";
+  };
+
   return (
     <div className="flex w-full flex-col overflow-auto rounded-lg border border-[#97ce4c] bg-[#44281d]">
       <ScrollArea className="flex-1 overflow-auto">
         <Table className="text-[#FAFAF5]">
-          <TableHeader>
+          <TableHeader className="hidden md:flex">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
@@ -94,37 +104,43 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
+                  className="flex w-full flex-col md:flex-row"
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      style={{ width: cell.column.getSize() }}
+                      style={{ width: calculateWidth(cell.column.getSize()) }}
                     >
-                      {cell.column.id === "name" ? (
-                        <Link
-                          href={`/character/${
-                            (row.original as { id: number }).id
-                          }`}
-                          className="text-blue-500 underline"
-                        >
-                          {cell.getValue() as string}
-                        </Link>
-                      ) : cell.column.id === "image" ? (
-                        <div className="relative h-12 w-12">
-                          <Image
-                            src={cell.getValue() as string}
-                            alt={(row.original as { name: string }).name}
-                            fill
-                            unoptimized
-                          />
-                        </div>
-                      ) : (
-                        flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )
-                      )}
+                      <div className="flex w-full items-center justify-between md:block">
+                        <span className="flex font-bold md:hidden">
+                          {cell.column.columnDef.header as string}
+                        </span>
+                        {cell.column.id === "name" ? (
+                          <Link
+                            href={`/character/${
+                              (row.original as { id: number }).id
+                            }`}
+                            className="text-blue-500 underline"
+                          >
+                            {cell.getValue() as string}
+                          </Link>
+                        ) : cell.column.id === "image" ? (
+                          <div className="relative h-12 w-12">
+                            <Image
+                              src={cell.getValue() as string}
+                              alt={(row.original as { name: string }).name}
+                              fill
+                              unoptimized
+                            />
+                          </div>
+                        ) : (
+                          flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )
+                        )}
+                      </div>
                     </TableCell>
                   ))}
                 </TableRow>

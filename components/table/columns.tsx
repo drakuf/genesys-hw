@@ -27,12 +27,12 @@ export const columns: ColumnDef<Character>[] = [
   {
     accessorKey: "id",
     header: "ID",
-    maxSize: 75,
+    maxSize: 100,
   },
   {
     accessorKey: "image",
     header: "Avatar",
-    maxSize: 75,
+    maxSize: 100,
   },
   {
     accessorKey: "name",
@@ -42,11 +42,11 @@ export const columns: ColumnDef<Character>[] = [
   {
     accessorKey: "species",
     header: "Species",
-    minSize: 125,
+    minSize: 155,
   },
   {
     accessorKey: "status",
     header: "Status",
-    minSize: 125,
+    minSize: 155,
   },
 ];

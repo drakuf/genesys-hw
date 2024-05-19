@@ -49,14 +49,14 @@ const CharacterPage: React.FC<CharacterPageProps> = ({
   };
 
   return (
-    <div className="flex h-svh max-h-svh flex-col items-center justify-center gap-6 p-12">
+    <div className="flex h-svh max-h-svh flex-col items-center justify-center gap-6 overflow-auto p-6 md:p-12">
       <span
         className="cursor-pointer font-bold text-[#FAFAF5]"
         onClick={() => navigateToHome()}
       >
         BACK TO THE HOME PAGE
       </span>
-      <Card className="flex h-full flex-col items-center justify-start overflow-auto">
+      <Card className="flex h-full w-full flex-col items-center justify-start overflow-auto p-6">
         <CardHeader className="flex flex-col gap-6">
           <div className="flex w-full items-center justify-center gap-10 text-lg font-bold">
             <CardTitle>{character?.name}</CardTitle>

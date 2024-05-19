@@ -74,7 +74,7 @@ export default function Home() {
         placeholder="Search by name"
         defaultValue={searchValue}
         onChange={handleSearchChange}
-        className="mb-4 rounded border border-gray-300 px-2 py-1"
+        className="md:ring-offset-opacity-50 md:ring-offset-solid mb-4 w-full rounded border border-gray-300 px-2 py-1 md:mb-0 md:mr-4 md:w-auto md:transform md:rounded-lg md:border-[#97ce4c] md:bg-[#44281d] md:px-4 md:py-2 md:text-[#FAFAF5] md:placeholder-[#97ce4c] md:placeholder-opacity-50 md:ring-2 md:ring-[#97ce4c] md:ring-opacity-50 md:ring-offset-[#97ce4c] md:transition-all md:duration-300 md:ease-in-out md:hover:scale-105 md:focus:border-[#97ce4c] md:focus:outline-none md:active:scale-95"
       />
       {data ? (
         <DataTable
