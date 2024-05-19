@@ -1,5 +1,7 @@
+import Background from "@/public/images/rick-and-morty-bg.jpg";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Image from "next/image";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,7 +18,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+        <Image
+          src={Background}
+          alt="Rick and Morty background"
+          quality={100}
+          fill
+          sizes="100vw"
+          className="-z-20 object-cover object-center"
+        />
+        <div className="absolute left-0 top-0 -z-10 h-full w-full bg-black bg-opacity-70"></div>
+      </body>
     </html>
   );
 }
