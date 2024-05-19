@@ -51,8 +51,6 @@ export function DataTable<TData, TValue>({
     pageCount: data?.info?.pages ?? 0,
   });
 
-  console.log("hasnextpage", hasNextPage);
-
   const handleNextPage = () => {
     if (hasNextPage) {
       setPage(page + 1);
