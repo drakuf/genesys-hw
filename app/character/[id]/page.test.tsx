@@ -112,7 +112,7 @@ describe("CharacterPage", () => {
     expect(image).toBeInTheDocument();
     expect(image).toHaveAttribute(
       "src",
-      expect.stringContaining("/_next/image?url=%2Frick.png"),
+      expect.stringContaining("/rick.png"),
     );
   });
 });

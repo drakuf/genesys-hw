@@ -78,8 +78,8 @@ const CharacterPage: React.FC<CharacterPageProps> = ({ params }) => {
     { label: "Species", value: character?.species },
     { label: "Status", value: character?.status },
     { label: "Gender", value: character?.gender },
-    { label: "Origin", value: character?.origin.name },
-    { label: "Location", value: character?.location.name },
+    { label: "Origin", value: character?.origin?.name },
+    { label: "Location", value: character?.location?.name },
     { label: "Type", value: character?.type },
   ];
 
