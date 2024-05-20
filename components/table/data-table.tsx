@@ -17,6 +17,7 @@ import {
 } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { ApiResponse } from "./columns";
 
@@ -37,6 +38,15 @@ export function DataTable<TData, TValue>({
   hasNextPage,
   hasPrevPage,
 }: DataTableProps<TData, TValue>) {
+  const [screenWidth, setScreenWidth] = useState<number>(0);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const table = useReactTable({
     data: data?.results ?? [],
     columns,
@@ -64,13 +74,7 @@ export function DataTable<TData, TValue>({
   };
 
   const calculateWidth = (size: number) => {
-    if (typeof window !== "undefined") {
-      const screenWidth = window.innerWidth;
-      if (screenWidth >= 768) {
-        return size;
-      }
-    }
-    return "100%";
+    return screenWidth >= 768 ? `${size}px` : "100%";
   };
 
   return (
@@ -84,7 +88,7 @@ export function DataTable<TData, TValue>({
                   <TableHead
                     key={header.id}
                     className="font-bold text-[#97ce4c]"
-                    style={{ width: header.getSize() }}
+                    style={{ width: calculateWidth(header.getSize()) }}
                   >
                     {header.isPlaceholder
                       ? null
@@ -102,7 +106,7 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="flex w-full flex-col md:flex-row"
+                  className="flex w-full flex-col md:flex-row md:items-center md:justify-between"
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -119,7 +123,7 @@ export function DataTable<TData, TValue>({
                             href={`/character/${
                               (row.original as { id: number }).id
                             }`}
-                            className="text-blue-500 underline"
+                            className="text-end text-blue-500 underline md:text-start"
                           >
                             {cell.getValue() as string}
                           </Link>

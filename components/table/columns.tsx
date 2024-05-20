@@ -35,11 +35,6 @@ export interface Character {
 
 export const columns: ColumnDef<Character>[] = [
   {
-    accessorKey: "id",
-    header: "ID",
-    maxSize: 100,
-  },
-  {
     accessorKey: "image",
     header: "Avatar",
     maxSize: 100,
