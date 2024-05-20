@@ -30,7 +30,7 @@ export default function Home() {
   const fetchCharacters = async (name: string, page: number) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_CHARACTER_API_URL}?page=${page}&name=${name}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/character?page=${page}&name=${name}`,
       );
       const data = await response.json();
 

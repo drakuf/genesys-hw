@@ -13,22 +13,49 @@ jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
 
+const mockCharacter = {
+  id: "1",
+  name: "Rick Sanchez",
+  image: "/rick.png",
+  episode: [
+    "https://rickandmortyapi.com/api/episode/1",
+    "https://rickandmortyapi.com/api/episode/2",
+  ],
+};
+
+const mockEpisodes = [
+  {
+    id: 1,
+    name: "Pilot",
+    air_date: "December 2, 2013",
+    episode: "S01E01",
+  },
+  {
+    id: 2,
+    name: "Lawnmower Dog",
+    air_date: "December 9, 2013",
+    episode: "S01E02",
+  },
+];
+
 beforeEach(() => {
   (useRouter as jest.Mock).mockReturnValue({
     push: jest.fn(),
   });
 
-  global.fetch = jest.fn(() =>
-    Promise.resolve({
-      json: () =>
-        Promise.resolve({
-          id: "1",
-          name: "Rick Sanchez",
-          image: "/rick.png",
-          episode: ["S01E01", "S01E02"],
-        }),
-    }),
-  ) as jest.Mock;
+  global.fetch = jest.fn((url): Promise<Response> => {
+    if (url.toString().includes("/character/")) {
+      return Promise.resolve({
+        json: () => Promise.resolve(mockCharacter),
+      }) as Promise<Response>;
+    }
+    if (url.toString().includes("/episode/")) {
+      return Promise.resolve({
+        json: () => Promise.resolve(mockEpisodes),
+      }) as Promise<Response>;
+    }
+    return Promise.reject(new Error("not found"));
+  });
 });
 
 afterEach(() => {
@@ -41,7 +68,7 @@ describe("CharacterPage", () => {
       render(<CharacterPage params={{ id: "1" }} />);
     });
 
-    await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(2));
     await waitFor(() =>
       expect(screen.getByText("Rick Sanchez")).toBeInTheDocument(),
     );
@@ -67,8 +94,12 @@ describe("CharacterPage", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("S01E01")).toBeInTheDocument();
-      expect(screen.getByText("S01E02")).toBeInTheDocument();
+      expect(
+        screen.getByText("S01E01: Pilot (December 2, 2013)"),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("S01E02: Lawnmower Dog (December 9, 2013)"),
+      ).toBeInTheDocument();
     });
   });
 

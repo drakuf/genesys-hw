@@ -1,13 +1,8 @@
 "use client";
 
+import Spinner from "@/components/spinner/spinner";
 import { Character } from "@/components/table/columns";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -18,20 +13,24 @@ interface CharacterPageProps {
   };
 }
 
-const CharacterPage: React.FC<CharacterPageProps> = ({
-  params,
-}: {
-  params: { id: string };
-}) => {
+interface Episode {
+  id: number;
+  name: string;
+  air_date: string;
+  episode: string;
+}
+
+const CharacterPage: React.FC<CharacterPageProps> = ({ params }) => {
   const route = useRouter();
 
   const [character, setCharacter] = useState<Character>();
+  const [episodes, setEpisodes] = useState<Episode[]>([]);
 
   useEffect(() => {
     const fetchCharacter = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_CHARACTER_API_URL}/${params.id}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/character/${params.id}`,
         );
         const data = await response.json();
 
@@ -44,9 +43,45 @@ const CharacterPage: React.FC<CharacterPageProps> = ({
     fetchCharacter();
   }, [params.id]);
 
+  useEffect(() => {
+    const fetchEpisodes = async () => {
+      if (character?.episode.length) {
+        const episodeIds = character.episode
+          .map((e) => {
+            const parts = e.split("/");
+            return parts[parts.length - 1];
+          })
+          .join(",");
+
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/episode/${episodeIds}`,
+          );
+          const data = await response.json();
+          setEpisodes(Array.isArray(data) ? data : [data]);
+        } catch (error) {
+          console.error("Failed to fetch episodes:", error);
+        }
+      }
+    };
+
+    fetchEpisodes();
+  }, [character]);
+
   const navigateToHome = () => {
     route.push("/");
   };
+
+  const characterInfo = [
+    { label: "ID", value: character?.id },
+    { label: "Name", value: character?.name },
+    { label: "Species", value: character?.species },
+    { label: "Status", value: character?.status },
+    { label: "Gender", value: character?.gender },
+    { label: "Origin", value: character?.origin.name },
+    { label: "Location", value: character?.location.name },
+    { label: "Type", value: character?.type },
+  ];
 
   return (
     <div className="flex h-svh max-h-svh flex-col items-center justify-center gap-6 overflow-auto p-6 md:p-12">
@@ -56,25 +91,43 @@ const CharacterPage: React.FC<CharacterPageProps> = ({
       >
         BACK TO THE HOME PAGE
       </span>
-      <Card className="flex h-full w-full flex-col items-center justify-start overflow-auto p-6">
-        <CardHeader className="flex flex-col gap-6">
-          <div className="flex w-full items-center justify-center gap-10 text-lg font-bold">
-            <CardTitle>{character?.name}</CardTitle>
-            <CardDescription>ID: {character?.id}</CardDescription>
+      <Card className="flex h-full flex-col items-center justify-start gap-10 overflow-auto border border-[#97ce4c] bg-[#44281d] p-6 text-[#FAFAF5]">
+        <CardHeader className="flex w-full flex-col justify-between gap-10 md:flex-row md:items-center">
+          <div className="flex flex-1 flex-col gap-3">
+            {characterInfo.map(
+              (info) =>
+                info.value && (
+                  <div
+                    key={info.label}
+                    className="flex justify-between gap-5 text-lg font-bold"
+                  >
+                    <span>{info.label}:</span>
+                    <span className="font-normal">{info.value}</span>
+                  </div>
+                ),
+            )}
           </div>
-          <div className="relative m-auto h-40 w-40">
-            <Image
-              src={character?.image ?? ""}
-              alt={character?.name ?? ""}
-              fill
-              unoptimized
-            />
-          </div>
+          {character && (
+            <div className="relative m-auto flex h-40 w-40 flex-shrink-0 overflow-hidden rounded-full border-2 border-[#97ce4c]">
+              <Image
+                src={character.image}
+                alt={character.name}
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
         </CardHeader>
-        <CardContent className="flex w-full flex-col gap-1 overflow-auto">
-          {character?.episode.map((episode) => (
-            <div key={episode}>{episode}</div>
-          ))}
+        <CardContent className="flex w-full flex-col gap-3 overflow-auto">
+          {episodes.length ? (
+            episodes.map((episode) => (
+              <div key={episode.id}>
+                {episode.episode}: {episode.name} ({episode.air_date})
+              </div>
+            ))
+          ) : (
+            <Spinner />
+          )}
         </CardContent>
       </Card>
     </div>

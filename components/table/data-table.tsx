@@ -48,7 +48,7 @@ export function DataTable<TData, TValue>({
       },
     },
     manualPagination: true,
-    pageCount: data?.info?.pages ?? 0,
+    pageCount: data?.info?.pages ?? 1,
   });
 
   const handleNextPage = () => {
@@ -74,7 +74,7 @@ export function DataTable<TData, TValue>({
   };
 
   return (
-    <div className="flex w-full flex-col overflow-auto rounded-lg border border-[#97ce4c] bg-[#44281d]">
+    <div className="flex w-full flex-col overflow-auto rounded-lg border border-[#97ce4c] bg-[#44281d] md:w-auto">
       <ScrollArea className="flex-1 overflow-auto">
         <Table className="text-[#FAFAF5]">
           <TableHeader className="hidden md:flex">
