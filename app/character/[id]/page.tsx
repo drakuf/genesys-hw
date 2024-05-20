@@ -91,15 +91,15 @@ const CharacterPage: React.FC<CharacterPageProps> = ({ params }) => {
       >
         BACK TO THE HOME PAGE
       </span>
-      <Card className="flex h-full flex-col items-center justify-start gap-10 overflow-auto border border-[#97ce4c] bg-[#44281d] p-6 text-[#FAFAF5]">
-        <CardHeader className="flex w-full flex-col justify-between gap-10 md:flex-row md:items-center">
-          <div className="flex flex-1 flex-col gap-3">
+      <Card className="flex h-full flex-col items-center justify-start gap-3 overflow-auto border border-[#97ce4c] bg-[#44281d] p-6 text-[#FAFAF5] md:gap-10">
+        <CardHeader className="flex w-full flex-col justify-between gap-3 md:flex-row md:items-center md:gap-10">
+          <div className="flex flex-1 flex-col gap-1">
             {characterInfo.map(
               (info) =>
                 info.value && (
                   <div
                     key={info.label}
-                    className="flex justify-between gap-5 text-lg font-bold"
+                    className="flex justify-between gap-5 font-bold"
                   >
                     <span>{info.label}:</span>
                     <span className="font-normal">{info.value}</span>
@@ -108,7 +108,7 @@ const CharacterPage: React.FC<CharacterPageProps> = ({ params }) => {
             )}
           </div>
           {character && (
-            <div className="relative m-auto flex h-40 w-40 flex-shrink-0 overflow-hidden rounded-full border-2 border-[#97ce4c]">
+            <div className="relative m-auto flex h-32 w-32 flex-shrink-0 overflow-hidden rounded-full border-2 border-[#97ce4c] md:h-56 md:w-56">
               <Image
                 src={character.image}
                 alt={character.name}
