@@ -114,6 +114,7 @@ const CharacterPage: React.FC<CharacterPageProps> = ({ params }) => {
                 alt={character.name}
                 fill
                 className="object-cover"
+                unoptimized
               />
             </div>
           )}
